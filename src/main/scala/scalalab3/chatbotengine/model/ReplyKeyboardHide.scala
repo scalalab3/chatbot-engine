@@ -1,3 +1,3 @@
 package scalalab3.chatbotengine.model
 
-case class ReplyKeyboardHide(val hideKeyboard: Boolean = true, val selective: Boolean)
+case class ReplyKeyboardHide(hideKeyboard: Boolean = true, selective: Option[Boolean] = None)
