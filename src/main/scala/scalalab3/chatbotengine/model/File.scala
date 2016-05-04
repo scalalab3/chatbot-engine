@@ -1,3 +1,3 @@
 package scalalab3.chatbotengine.model
 
-case class File(val fileId: String, val fileSize: Integer, val filePath: String)
+case class File(fileId: String, fileSize: Option[Integer] = None, filePath: Option[String] = None)

@@ -1,3 +1,4 @@
 package scalalab3.chatbotengine.model
 
-case class Contact(val phoneNumber: String, val firstName: String, val lastName: String, val userId: Integer)
+case class Contact(phoneNumber: String, firstName: String, lastName: Option[String] = None,
+                   userId: Option[Integer] = None)

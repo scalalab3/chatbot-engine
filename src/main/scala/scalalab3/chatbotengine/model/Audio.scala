@@ -1,5 +1,5 @@
 package scalalab3.chatbotengine.model
 
 
-case class Audio(val fileId: String, val duration: Integer, val performer: String, val title: String,
-                 val mimeType: String, val fileSize: Integer)
+case class Audio(fileId: String, duration: Integer, performer: Option[String] = None, title: Option[String] = None,
+                 mimeType: Option[String] = None, fileSize: Option[Integer] = None)

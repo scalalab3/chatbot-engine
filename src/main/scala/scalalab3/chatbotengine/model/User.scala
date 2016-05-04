@@ -1,3 +1,3 @@
 package scalalab3.chatbotengine.model
 
-case class User(val id: Integer, val firstName: String, val lastName: String, val username: String);
+case class User(id: Integer, firstName: String, lastName: Option[String] = None, username: Option[String] = None);
