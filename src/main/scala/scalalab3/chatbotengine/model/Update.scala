@@ -1,4 +1,8 @@
 package scalalab3.chatbotengine.model
 
-case class Update(val updateId: Integer, val message: Message, val inlineQuery: InlineQuery,
-                  val chosenInlineResult: ChosenInlineResult, val callbackQuery: CallbackQuery)
+case class Update(
+    updateId: Integer,
+    message: Option[Message] = None,
+    inlineQuery: Option[InlineQuery] = None,
+    chosenInlineResult: Option[ChosenInlineResult] = None,
+    callbackQuery: Option[CallbackQuery] = None)

@@ -1,4 +1,7 @@
 package scalalab3.chatbotengine.model
 
-case class ReplyKeyboardMarkup(val keyboard: Array[Array[KeyboardButton]], val resizeKeyboard: Boolean,
-                               val oneTimeKeyboard: Boolean, val selective: Boolean)
+case class ReplyKeyboardMarkup(
+    keyboard: Array[Array[KeyboardButton]], 
+    resizeKeyboard: Option[Boolean] = None,
+    oneTimeKeyboard: Option[Boolean] = None,
+    selective: Option[Boolean] = None)

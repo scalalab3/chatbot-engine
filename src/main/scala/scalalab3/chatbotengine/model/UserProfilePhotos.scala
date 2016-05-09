@@ -1,4 +1,6 @@
 package scalalab3.chatbotengine.model
 
 
-case class UserProfilePhotos(val totalCount: Integer, val photos: Array[Array[PhotoSize]])
+case class UserProfilePhotos(
+    totalCount: Integer,
+    photos: Array[Array[PhotoSize]])

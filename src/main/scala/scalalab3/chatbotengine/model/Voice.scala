@@ -1,3 +1,7 @@
 package scalalab3.chatbotengine.model
 
-case class Voice(val fileId: String, val duration: Integer, val mimeType: String, val fileSize: Integer)
+case class Voice(
+    fileId: String,
+    duration: Integer,
+    mimeType: Option[String] = None,
+    fileSize: Option[Integer] = None)

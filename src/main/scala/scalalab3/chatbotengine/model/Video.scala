@@ -1,4 +1,10 @@
 package scalalab3.chatbotengine.model
 
-case class Video(val fileId: String, val width: Integer, val height: Integer, val duration: Integer,
-                 val thumb: PhotoSize, val mimeType: String, val fileSize: Integer)
+case class Video(
+    fileId: String,
+    width: Integer,
+    height: Integer,
+    duration: Integer,
+    thumb: Option[PhotoSize] = None,
+    mimeType: Option[String] = None,
+    fileSize: Option[Integer] = None)

@@ -1,3 +1,6 @@
 package scalalab3.chatbotengine.model
 
-case class KeyboardButton(val text: String, val requestContact: Boolean, val requestLocation: Boolean)
+case class KeyboardButton(
+    text: String, 
+    requestContact: Option[Boolean] = None, 
+    requestLocation: Option[Boolean] = None)
