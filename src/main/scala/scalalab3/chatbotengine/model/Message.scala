@@ -1,13 +1,13 @@
 package scalalab3.chatbotengine.model
 
 case class Message(
-    id: Long,
-    date: Integer,
+    messageId: Long,
+    date: Int,
     chat: Chat,
 
     from: Option[User] = None,
     forwardFrom: Option[User] = None,
-    forwardDate: Option[Integer] = None,
+    forwardDate: Option[Int] = None,
     replyToMessage: Option[Message] = None,
     text: Option[String] = None,
     entities: Option[Array[MessageEntity]] = None,
@@ -29,6 +29,6 @@ case class Message(
     groupChatCreated: Option[Boolean] = None,
     superGroupChatCreated: Option[Boolean] = None,
     channelChatCreated: Option[Boolean] = None,
-    migrateToChatId: Option[Integer] = None,
-    migrateFromChatId: Option[Integer] = None,
+    migrateToChatId: Option[Int] = None,
+    migrateFromChatId: Option[Int] = None,
     pinnedMessage: Option[Message] = None)
