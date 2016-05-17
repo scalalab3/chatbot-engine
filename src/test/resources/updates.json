@@ -1,0 +1,46 @@
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 850436724,
+      "message": {
+        "message_id": 1,
+        "from": {
+          "id": 23712441,
+          "first_name": "Andrey"
+        },
+        "chat": {
+          "id": 23712441,
+          "first_name": "Andrey",
+          "type": "private"
+        },
+        "date": 1463482814,
+        "text": "\/start",
+        "entities": [
+          {
+            "type": "bot_command",
+            "offset": 0,
+            "length": 6
+          }
+        ]
+      }
+    },
+    {
+      "update_id": 850436725,
+      "message": {
+        "message_id": 2,
+        "from": {
+          "id": 23712441,
+          "first_name": "Andrey"
+        },
+        "chat": {
+          "id": 23712441,
+          "first_name": "Andrey",
+          "type": "private"
+        },
+        "date": 1463482863,
+        "text": "44"
+      }
+    }
+  ]
+}
