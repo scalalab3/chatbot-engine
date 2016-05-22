@@ -1,14 +1,16 @@
 package scalalab3.chatbotengine.telegram
 
+import akka.actor.ActorSystem
+
+import scala.collection.mutable.ListBuffer
 import scalalab3.chatbotengine.core._
 
 class TelegramLongPoolingEngine extends ChatBotEngine {
-	def registerChatBot(bot: ChatBot) = {
-    // FIXME implement me
-    ???
-	}
+  var registeredBots: scala.collection.mutable.ListBuffer[ChatBot] = ListBuffer.empty
 
-	def start() = {
-    // FIXME implement me
-	}
+  def registerChatBot(bot: ChatBot): Unit = registeredBots += bot
+
+  def start(as: ActorSystem) =
+    as.actorOf(PoolingEngineActor.props(registeredBots.toList))
 }
+
