@@ -1,11 +1,8 @@
 language: scala
-
 scala: 2.11.8
-
 jdk: oraclejdk8
-
 before_install:
-  - openssl aes-256-cbc -K $encrypted_04a79d8b0209_key -iv $encrypted_04a79d8b0209_iv -in src/main/resources/tokens.conf.enc -out src/main/resources/tokens.conf -d
-
+- openssl aes-256-cbc -K $encrypted_04a79d8b0209_key -iv $encrypted_04a79d8b0209_iv
+  -in src/main/resources/tokens.conf.enc -out src/main/resources/tokens.conf -d
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION test
+- sbt ++$TRAVIS_SCALA_VERSION test
