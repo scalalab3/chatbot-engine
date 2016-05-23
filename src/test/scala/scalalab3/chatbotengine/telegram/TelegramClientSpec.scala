@@ -17,7 +17,7 @@ class TelegramClientSpec extends FunSpec with Matchers {
       user.username shouldBe Some(username)
     }
 
-    it("should get updates") {
+    ignore("should get updates") {
       val client = new TelegramClient(username, password)
       val updates = Await.result(client.getUpdates(), 180.seconds)
       updates.length should be > 0
