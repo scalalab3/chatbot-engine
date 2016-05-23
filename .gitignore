@@ -130,4 +130,4 @@ project/plugins/project/
 .scala_dependencies
 .worksheet
 
-/src/main/resources/credentials.conf
+/src/main/resources/tokens.conf

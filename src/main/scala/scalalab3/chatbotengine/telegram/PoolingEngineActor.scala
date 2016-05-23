@@ -23,10 +23,10 @@ class PoolingEngineActor(bots: Traversable[ChatBot]) extends Actor with ActorLog
   import context.dispatcher
 
   val registry = bots.map { b =>
-    val cfg = ConfigFactory.load().getConfig(b.getClass.getSimpleName)
-    val username = cfg.getString("name")
-    val password = cfg.getString("token")
-    val client = new TelegramClient(username, password)
+    val cfg = ConfigFactory.load()
+    val auth = cfg.getString(s"bots.${b.getClass.getSimpleName}")
+    val token = cfg.getString(s"tokens.$auth")
+    val client = new TelegramClient(auth, token)
 
     val bot = context.actorOf(BotActor.props(b))
     (bot, client)
