@@ -1,16 +1,19 @@
 package scalalab3.chatbotengine.examples
 
 import akka.actor.ActorSystem
+import shapeless._
+import shapeless.test.illTyped
 
 import scalalab3.chatbotengine._
-import core._
+import core.{TelegramLongPoolingEngine, _}
 import model._
-import scalalab3.chatbotengine.telegram.TelegramLongPoolingEngine
 
 object EchoTelegramExample extends App {
-  val engine = new TelegramLongPoolingEngine()
-  engine.registerChatBot(new EchoChatBot)
-  engine.start(ActorSystem("mySystem"))
+  val appConfig = AppConfig.load()
+
+  TelegramLongPoolingEngine()
+    .registerChatBot(new EchoChatBot)
+    .start(ActorSystem("mySystem"), appConfig.bots)
 }
 
 class EchoChatBot extends ChatBot {

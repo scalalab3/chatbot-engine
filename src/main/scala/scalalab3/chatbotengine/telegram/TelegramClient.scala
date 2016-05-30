@@ -7,6 +7,7 @@ import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.Serialization.write
 
 import scala.concurrent.Future
+import scala.reflect.ClassTag
 import scalalab3.chatbotengine.model._
 
 class TelegramClient(userName: String, pass: String) {
@@ -17,11 +18,7 @@ class TelegramClient(userName: String, pass: String) {
   def getMe: Future[User] = {
     val getMe = url(s"$urlPrefix/getMe")
 
-    Http(getMe OK { request =>
-      val body = request.getResponseBody
-      val parsed = parse(body)
-      (parsed \\ "result").camelizeKeys.extract[User]
-    })
+    processMessage[User](getMe)
   }
 
   def sendMessage(message: OutMessage): Future[OutMessage] = {
@@ -30,20 +27,21 @@ class TelegramClient(userName: String, pass: String) {
         .setContentType("application/json", "UTF-8")
         .setBody(write(Extraction.decompose(message).snakizeKeys))
 
-    Http(sendMessageUrl OK { request =>
-      val body = request.getResponseBody
-      val parsed = parse(body)
-      (parsed \\ "result").camelizeKeys.extract[OutMessage]
-    })
+    processMessage[OutMessage](sendMessageUrl)
   }
 
   def getUpdates(offset: Option[Int] = None): Future[Seq[Update]] = {
-    val getUpdatesURL = url(s"$urlPrefix/getUpdates").addQueryParameter("offset", offset.fold("")(_.toString))
+    val getUpdatesURL =
+      url(s"$urlPrefix/getUpdates")
+        .addQueryParameter("offset", offset.fold("")(_.toString))
 
-    Http(getUpdatesURL OK { request =>
-      val body = request.getResponseBody
-      val parsed = parse(body)
-      (parsed \\ "result").camelizeKeys.extract[Seq[Update]]
-    })
+    processMessage[Seq[Update]](getUpdatesURL)
   }
+
+  private def processMessage[T: Manifest] (request: Req): Future[T] =
+    Http(request OK { response =>
+      val body = response.getResponseBody
+      val parsed = parse(body)
+      (parsed \\ "result").camelizeKeys.extract[T]
+    })
 }
