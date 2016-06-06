@@ -2,18 +2,15 @@ package scalalab3.chatbotengine.telegram
 
 import dispatch.Defaults._
 import dispatch._
-import org.json4s.{DefaultFormats, _}
-import org.json4s.jackson.JsonMethods._
-import org.json4s.jackson.Serialization.write
+import play.api.libs.json.{Json, Reads}
 
 import scala.concurrent.Future
-import scala.reflect.ClassTag
-import scalalab3.chatbotengine.model._
+import scalalab3.chatbotengine.model.common.User
+import scalalab3.chatbotengine.model.inbound.update.Update
+import scalalab3.chatbotengine.model.outbound.OutMessage
 
 class TelegramClient(userName: String, pass: String) {
   val urlPrefix = s"https://api.telegram.org/bot$pass"
-
-  implicit val formats = DefaultFormats
 
   def getMe: Future[User] = {
     val getMe = url(s"$urlPrefix/getMe")
@@ -25,7 +22,7 @@ class TelegramClient(userName: String, pass: String) {
     val sendMessageUrl =
       url(s"$urlPrefix/sendMessage")
         .setContentType("application/json", "UTF-8")
-        .setBody(write(Extraction.decompose(message).snakizeKeys))
+        .setBody(Json.toJson(message).as[String])
 
     processMessage[OutMessage](sendMessageUrl)
   }
@@ -34,14 +31,17 @@ class TelegramClient(userName: String, pass: String) {
     val getUpdatesURL =
       url(s"$urlPrefix/getUpdates")
         .addQueryParameter("offset", offset.fold("")(_.toString))
+    Http(getUpdatesURL OK { response =>
+      val body = response.getResponseBody
+      Json.parse(body)
+    }).onComplete(println)
 
     processMessage[Seq[Update]](getUpdatesURL)
   }
 
-  private def processMessage[T: Manifest] (request: Req): Future[T] =
+  private def processMessage[T: Reads] (request: Req): Future[T] =
     Http(request OK { response =>
       val body = response.getResponseBody
-      val parsed = parse(body)
-      (parsed \\ "result").camelizeKeys.extract[T]
+      (Json.parse(body) \ "result").as[T]
     })
 }

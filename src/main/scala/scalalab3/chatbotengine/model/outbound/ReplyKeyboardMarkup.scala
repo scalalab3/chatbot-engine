@@ -1,4 +1,4 @@
-package scalalab3.chatbotengine.model
+package scalalab3.chatbotengine.model.outbound
 
 case class ReplyKeyboardMarkup(
     keyboard: Array[Array[KeyboardButton]], 

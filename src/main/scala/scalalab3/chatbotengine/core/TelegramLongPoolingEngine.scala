@@ -6,10 +6,8 @@ import shapeless.ops.hlist.IsHCons
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
-
-import scalalab3.chatbotengine.actors.TelegramClientActor
-import scalalab3.chatbotengine.actors.TelegramClientActor._
-import scalalab3.chatbotengine.telegram.TelegramClient
+import scalalab3.chatbotengine.telegram.TelegramClientActor.GetUpdates
+import scalalab3.chatbotengine.telegram.{TelegramClient, TelegramClientActor}
 
 class TelegramLongPoolingEngine[L <: HList](bots: List[ChatBot]) extends ChatBotEngine[L] {
   def registerChatBot[U <: ChatBot](bot: U)

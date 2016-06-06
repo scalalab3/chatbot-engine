@@ -1,10 +1,9 @@
-package scalalab3.chatbotengine.actors
+package scalalab3.chatbotengine.telegram
 
 import akka.actor.{Actor, ActorLogging, Props}
 
-import scalalab3.chatbotengine.actors.TelegramClientActor.{GetUpdates, NewOffset}
 import scalalab3.chatbotengine.core.ChatBot
-import scalalab3.chatbotengine.telegram.TelegramClient
+import scalalab3.chatbotengine.telegram.TelegramClientActor.{GetUpdates, NewOffset}
 
 class TelegramClientActor(client: TelegramClient, bot: ChatBot) extends Actor with ActorLogging {
   import context.dispatcher
@@ -14,12 +13,13 @@ class TelegramClientActor(client: TelegramClient, bot: ChatBot) extends Actor wi
     case GetUpdates =>
       for {
         updates <- client.getUpdates(offset)
-        update <- updates
-        response <- bot.receiveMessage(update)
+//        update <- updates
+//        response <- bot.receiveMessage(update)
       } {
-        self ! NewOffset(update.updateId + 1)
-        client.sendMessage(response)
-        log.info(s"Response sent - $response")
+        log.info(s"Update received - $updates")
+//        self ! NewOffset(update.updateId + 1)
+//        client.sendMessage(response)
+//        log.info(s"Response sent - $response")
       }
     case NewOffset(updateId) =>
       offset = Some(updateId)
@@ -27,8 +27,9 @@ class TelegramClientActor(client: TelegramClient, bot: ChatBot) extends Actor wi
 }
 
 object TelegramClientActor {
-  case object GetUpdates
-  case class NewOffset(updateId: Int)
+  sealed trait Messages
+  case object GetUpdates extends Messages
+  case class NewOffset(updateId: Int) extends Messages
 
   def props(client: TelegramClient, bot: ChatBot): Props =
     Props(new TelegramClientActor(client, bot))
