@@ -11,6 +11,6 @@ case class HashTag(offset: Int, length: Int) extends TextEntity
 case class BotCommand(offset: Int, length: Int) extends TextEntity
 
 object TextEntity {
-  implicit val read0: Reads[TextEntity] = derived.flat.reads((__ \ "type").read[String].map(StringUtil.camelcase))
+  implicit val textEntityRead: Reads[TextEntity] = derived.flat.reads((__ \ "type").read[String].map(StringUtil.camelcase))
   //TODO: custom TypeTagReads implementation
 }

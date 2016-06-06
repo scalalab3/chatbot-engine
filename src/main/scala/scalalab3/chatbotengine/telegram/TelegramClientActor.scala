@@ -14,13 +14,15 @@ class TelegramClientActor(client: TelegramClient, bot: ChatBot) extends Actor wi
       for {
         updates <- client.getUpdates(offset)
         update <- updates
-        response <- bot.receiveMessage(update)
       } {
         log.info(s"Update received - $updates")
         self ! NewOffset(update.updateId + 1)
-        client.sendMessage(response)
-        log.info(s"Response sent - $response")
+        bot.receiveMessage(update).fold() { response =>
+          client.sendMessage(response)
+          log.info(s"Response sent - $response")
+        }
       }
+
     case NewOffset(updateId) =>
       offset = Some(updateId)
   }

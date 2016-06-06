@@ -1,4 +1,4 @@
-package scalalab3.chatbotengine.model.inbound.messagecontent.media
+package scalalab3.chatbotengine.model.common
 
 case class File(
     fileId: String, 
