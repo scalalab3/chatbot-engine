@@ -2,6 +2,7 @@ package scalalab3.chatbotengine.model.inbound.messagecontent.media
 
 import com.github.tototoshi.play.json.JsonNaming
 import play.api.libs.json._
+import scalalab3.chatbotengine.model._
 
 import scalalab3.chatbotengine.model.inbound.messagecontent.MessageContent
 
@@ -19,12 +20,12 @@ object MediaContent {
   implicit val f8 = JsonNaming.snakecase(Json.format[Video])
   implicit val f9 = JsonNaming.snakecase(Json.format[Voice])
 
-  implicit val mediaContentReads = {
+  implicit val mediaContentReads: Reads[MediaContent] = {
     __.read[Audio].map(x => x: MediaContent) orElse
       __.read[Contact].map(x => x: MediaContent) orElse
       __.read[Document].map(x => x: MediaContent) orElse
       __.read[Location].map(x => x: MediaContent) orElse
-      __.read[Photo].map(x => x: MediaContent) orElse
+      (__ \ "photo").readSeqOrEmpty[PhotoSize].map(x => Photo(x): MediaContent) orElse
       __.read[Sticker].map(x => x: MediaContent) orElse
       __.read[Venue].map(x => x: MediaContent) orElse
       __.read[Video].map(x => x: MediaContent) orElse

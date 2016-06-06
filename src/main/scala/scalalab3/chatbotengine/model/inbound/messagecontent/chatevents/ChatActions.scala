@@ -14,7 +14,7 @@ sealed trait ChatActions extends MessageContent
 case class NewChatMember(newChatMember: User) extends ChatActions
 case class LeftChatMember(leftChatMember: User) extends ChatActions
 case class NewChatTitle(newChatTitle: String) extends ChatActions
-case class NewChatPhoto(newChatPhoto: Photo) extends ChatActions
+case class NewChatPhoto(newChatPhoto: PhotoSize) extends ChatActions
 case class DeleteChatPhoto(deleteChatPhoto: Boolean) extends ChatActions
 case class GroupChatCreated(groupChatCreated: Boolean) extends ChatActions
 case class SupergroupChatCreated(SupergroupChatCreated: Boolean) extends ChatActions

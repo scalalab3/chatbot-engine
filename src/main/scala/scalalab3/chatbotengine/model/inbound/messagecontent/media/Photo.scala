@@ -1,3 +1,3 @@
 package scalalab3.chatbotengine.model.inbound.messagecontent.media
 
-case class Photo(photoSizes: List[PhotoSize], caption: String) extends MediaContent
+case class Photo(photoSizes: Seq[PhotoSize], caption: Option[String] = None) extends MediaContent

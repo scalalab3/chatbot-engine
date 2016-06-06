@@ -6,7 +6,7 @@ import play.api.libs.json.{Json, Reads}
 
 import scala.concurrent.Future
 import scalalab3.chatbotengine.model.common.User
-import scalalab3.chatbotengine.model.inbound.update.Update
+import scalalab3.chatbotengine.model.inbound.update.{Message, Update}
 import scalalab3.chatbotengine.model.outbound.OutMessage
 
 class TelegramClient(userName: String, pass: String) {
@@ -18,25 +18,21 @@ class TelegramClient(userName: String, pass: String) {
     processMessage[User](getMe)
   }
 
-  def sendMessage(message: OutMessage): Future[OutMessage] = {
+  def sendMessage(message: OutMessage): Future[Message] = {
     val sendMessageUrl =
       url(s"$urlPrefix/sendMessage")
         .setContentType("application/json", "UTF-8")
-        .setBody(Json.toJson(message).as[String])
+        .setBody(Json.stringify(Json.toJson(message)))
 
-    processMessage[OutMessage](sendMessageUrl)
+    processMessage[Message](sendMessageUrl)
   }
 
   def getUpdates(offset: Option[Int] = None): Future[Seq[Update]] = {
     val getUpdatesURL =
       url(s"$urlPrefix/getUpdates")
         .addQueryParameter("offset", offset.fold("")(_.toString))
-    Http(getUpdatesURL OK { response =>
-      val body = response.getResponseBody
-      Json.parse(body)
-    }).onComplete(println)
 
-    processMessage[Seq[Update]](getUpdatesURL)
+    processMessage[List[Update]](getUpdatesURL)
   }
 
   private def processMessage[T: Reads] (request: Req): Future[T] =

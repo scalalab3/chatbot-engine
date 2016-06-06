@@ -20,7 +20,7 @@ class EchoChatBot extends ChatBot {
     case Update(_, Message(_, _, chat, _, Text(_, _, text, _))) =>
       Some(OutMessage(chat.id.toString, text))
     case _ =>
-      println("NOHIT")
+      println(s"Unrecognized update - $update")
       None
   }
 }
