@@ -40,16 +40,16 @@ object ChatActions {
   implicit val f10 = JsonNaming.snakecase(Json.format[MigrateFromChatId])
 
   implicit val chatActionsReads: Reads[ChatActions] = {
-    __.read[NewChatMember].map(x => x: ChatActions) or
-      __.read[LeftChatMember].map(x => x: ChatActions) or
-      __.read[NewChatTitle].map(x => x: ChatActions) or
-      __.read[NewChatPhoto].map(x => x: ChatActions) or
-      __.read[DeleteChatPhoto].map(x => x: ChatActions) or
-      __.read[GroupChatCreated].map(x => x: ChatActions) or
-      __.read[SupergroupChatCreated].map(x => x: ChatActions) or
-      __.read[ChannelChatCreated].map(x => x: ChatActions) or
-      __.read[MigrateToChatId].map(x => x: ChatActions) or
-      __.read[MigrateFromChatId].map(x => x: ChatActions) or
-      __.read[PinnedMessage].map(x => x: ChatActions)
+    (__ \ "newChatMember").read[NewChatMember].map(x => x: ChatActions) or
+      (__ \ "leftChatMember").read[LeftChatMember].map(x => x: ChatActions) or
+      (__ \ "newChatTitle").read[NewChatTitle].map(x => x: ChatActions) or
+      (__ \ "newChatPhoto").read[NewChatPhoto].map(x => x: ChatActions) or
+      (__ \ "deleteChatPhoto").read[DeleteChatPhoto].map(x => x: ChatActions) or
+      (__ \ "groupChatCreated").read[GroupChatCreated].map(x => x: ChatActions) or
+      (__ \ "supergroupChatCreated").read[SupergroupChatCreated].map(x => x: ChatActions) or
+      (__ \ "channelChatCreatec").read[ChannelChatCreated].map(x => x: ChatActions) or
+      (__ \ "migrateToChatId").read[MigrateToChatId].map(x => x: ChatActions) or
+      (__ \ "migrateFromChatId").read[MigrateFromChatId].map(x => x: ChatActions) or
+      (__ \ "pinnedMessage").read[PinnedMessage].map(x => x: ChatActions)
   }
 }

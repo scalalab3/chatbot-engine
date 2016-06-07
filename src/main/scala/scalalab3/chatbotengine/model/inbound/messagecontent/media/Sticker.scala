@@ -8,6 +8,7 @@ case class Sticker (
                      width: Int,
                      height: Int,
                      thumb: Option[PhotoSize],
+                     emoji: Option[String],
                      fileSize: Option[Int]) extends MediaContent
 
 object Sticker {

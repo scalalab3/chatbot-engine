@@ -1,7 +1,6 @@
 package scalalab3.chatbotengine.model.inbound.update
 
 import com.github.tototoshi.play.json.JsonNaming
-import julienrf.json.derived
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
