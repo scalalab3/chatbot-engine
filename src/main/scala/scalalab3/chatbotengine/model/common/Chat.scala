@@ -10,6 +10,7 @@ case class Chat(
     username: Option[String],
     firstName: Option[String],
     lastName: Option[String])
+//TODO: implement adt for “private”, “group”, “supergroup” or “channel”
 
 object Chat {
   implicit val chatFormat = JsonNaming.snakecase(Json.format[Chat])
