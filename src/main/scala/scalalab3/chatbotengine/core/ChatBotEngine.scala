@@ -1,5 +1,7 @@
 package scalalab3.chatbotengine.core
 
-trait ChatBotEngine {
-  def registerChatBot(bot: ChatBot)
+import shapeless._
+
+trait ChatBotEngine[L <: HList] {
+  def registerChatBot[U <: ChatBot](bot: U)(implicit ev: IsDistinctConstraint[U :: L]): ChatBotEngine[U :: L]
 }
