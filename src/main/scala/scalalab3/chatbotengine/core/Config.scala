@@ -5,7 +5,7 @@ import com.typesafe.config.{Config, ConfigFactory}
 import scala.collection.JavaConverters._
 
 case class BotCredential(auth: String, token: String)
-case class AppConfig(bots: Map[String, BotCredential])
+case class AppConfig(botCredentials: Map[String, BotCredential])
 
 object AppConfig {
   def load() = {

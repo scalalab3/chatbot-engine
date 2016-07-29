@@ -4,9 +4,7 @@ import com.github.tototoshi.play.json.JsonNaming
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class Update(updateId: Int, updateContent: UpdateContent) {
-//  def from: User = payload.sender
-}
+case class Update(updateId: Int, updateContent: UpdateContent)
 
 object Update {
   val read0: Reads[Update] = (

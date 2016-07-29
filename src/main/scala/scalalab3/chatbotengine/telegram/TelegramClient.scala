@@ -2,23 +2,22 @@ package scalalab3.chatbotengine.telegram
 
 import dispatch.Defaults._
 import dispatch._
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{Json, Reads, Writes}
 
 import scala.concurrent.Future
+import scalalab3.chatbotengine.core.BotCredential
 import scalalab3.chatbotengine.model.common.User
 import scalalab3.chatbotengine.model.inbound.update.{Message, Update}
-import scalalab3.chatbotengine.model.outbound.OutMessage
 
-class TelegramClient(userName: String, pass: String) {
-  val urlPrefix = s"https://api.telegram.org/bot$pass"
+trait TelegramClientBase {
+  def sendMessage[A : Writes](message: A): Future[Message]
+  def getUpdates(offset: Int): Future[Seq[Update]]
+}
 
-  def getMe: Future[User] = {
-    val getMe = url(s"$urlPrefix/getMe")
+case class TelegramClient(credential: BotCredential) extends TelegramClientBase {
+  val urlPrefix = s"https://api.telegram.org/bot${credential.token}"
 
-    processMessage[User](getMe)
-  }
-
-  def sendMessage(message: OutMessage): Future[Message] = {
+  def sendMessage[A : Writes](message: A): Future[Message] = {
     val sendMessageUrl =
       url(s"$urlPrefix/sendMessage")
         .setContentType("application/json", "UTF-8")
@@ -26,13 +25,15 @@ class TelegramClient(userName: String, pass: String) {
 
     processMessage[Message](sendMessageUrl)
   }
-
-  def getUpdates(offset: Option[Int] = None): Future[Seq[Update]] = {
-    val getUpdatesURL =
-      url(s"$urlPrefix/getUpdates")
-        .addQueryParameter("offset", offset.fold("")(_.toString))
-
+  def getUpdates(offset: Int): Future[Seq[Update]] = {
+    val getUpdatesURL = url(s"$urlPrefix/getUpdates").addQueryParameter("offset", offset.toString)
     processMessage[List[Update]](getUpdatesURL)
+  }
+
+  def getMe: Future[User] = {
+    val getMe = url(s"$urlPrefix/getMe")
+
+    processMessage[User](getMe)
   }
 
   private def processMessage[T: Reads] (request: Req): Future[T] =

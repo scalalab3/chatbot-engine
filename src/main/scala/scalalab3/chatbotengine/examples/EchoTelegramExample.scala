@@ -1,26 +1,42 @@
 package scalalab3.chatbotengine.examples
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorLogging, ActorSystem, Props}
 
-import scalalab3.chatbotengine.core.{TelegramLongPoolingEngine, _}
+import scala.concurrent.Future
+import scalalab3.chatbotengine.core._
+import scalalab3.chatbotengine.model.common.Chat
+import scalalab3.chatbotengine.model.inbound.messagecontent.media.{Media, Sticker}
 import scalalab3.chatbotengine.model.inbound.messagecontent.text.Text
-import scalalab3.chatbotengine.model.inbound.update.{Message, Update}
-import scalalab3.chatbotengine.model.outbound.OutMessage
+import scalalab3.chatbotengine.model.outbound.{InlineKeyboardButton, InlineKeyboardMarkup}
 
 object EchoTelegramExample extends App {
   val appConfig = AppConfig.load()
+  implicit val system = ActorSystem("mySystem")
 
-  TelegramLongPoolingEngine()
-    .registerChatBot(new EchoChatBot)
-    .start(ActorSystem("mySystem"), appConfig.bots)
+  new LongPoolingEngine(appConfig.botCredentials)
+    .registerChatBot(new EchoChatBot, "EchoChatBot")
+    .start()
 }
 
 class EchoChatBot extends ChatBot {
-  def receiveMessage(update: Update): Option[OutMessage] = update match {
-    case Update(_, Message(_, _, chat, _, Text(_, _, text, _))) =>
-      Some(OutMessage(chat.id.toString, text))
-    case _ =>
-      println(s"Unrecognized update - $update")
-      None
+  override def roomProps(chat: Chat): Props = Props(new EchoRoom(chat))
+}
+
+class EchoRoom(chat: Chat) extends ChatRoom(chat: Chat) with ActorLogging {
+  import context._
+  override def receive = {
+    case Text(_, _, text, _) =>
+      log.info(s"Received text message - $text from $sender")
+      complete(textReply(text))
+    case Media(_, _: Sticker) =>
+      complete{
+        Future.successful (
+          textReply("Sticker received").withKeyboard(
+          InlineKeyboardMarkup(Array(Array(
+            InlineKeyboardButton(text = "1", None, Some("1")),
+            InlineKeyboardButton(text = "2", None, Some("2"))
+          )))
+        )
+    )}
   }
 }
