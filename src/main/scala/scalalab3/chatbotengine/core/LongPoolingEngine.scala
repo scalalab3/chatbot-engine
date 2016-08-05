@@ -2,6 +2,8 @@ package scalalab3.chatbotengine.core
 
 import akka.actor.{ActorSystem, Props}
 
+import scalalab3.chatbotengine.config.BotCredential
+
 class LongPoolingEngine (creds: Map[String, BotCredential])
                         (implicit actorSystem: ActorSystem) extends ChatBotEngine {
   import LongPoolingEngineActor._

@@ -1,4 +1,4 @@
-package scalalab3.chatbotengine.core
+package scalalab3.chatbotengine.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 

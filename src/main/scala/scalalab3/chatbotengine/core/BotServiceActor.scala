@@ -2,7 +2,6 @@ package scalalab3.chatbotengine.core
 
 import akka.actor._
 import akka.pattern.pipe
-import play.api.libs.json.JsValue
 
 import scalalab3.chatbotengine.model.inbound.update.Update
 import scalalab3.chatbotengine.model.outbound._
@@ -10,6 +9,7 @@ import scalalab3.chatbotengine.telegram.TelegramClientBase
 
 class BotServiceActor(botRef: ActorRef, client: TelegramClientBase) extends Actor with ActorLogging {
   import context.dispatcher
+
   import BotServiceActor._
 
   var offset: Int = 0
@@ -20,9 +20,7 @@ class BotServiceActor(botRef: ActorRef, client: TelegramClientBase) extends Acto
 
     case UpdatesReceived(updates) =>
       val news = updates.filter( _.updateId >= offset )
-      news.map(_.updateId).reduceOption(_ max _).foreach {
-        maxId => offset = maxId + 1
-      }
+      offset = news.map(_.updateId).fold(offset)(_ max _) + 1
       news.foreach { update =>
         botRef ! update.updateContent
       }

@@ -5,7 +5,7 @@ import dispatch._
 import play.api.libs.json.{Json, Reads, Writes}
 
 import scala.concurrent.Future
-import scalalab3.chatbotengine.core.BotCredential
+import scalalab3.chatbotengine.config.BotCredential
 import scalalab3.chatbotengine.model.common.User
 import scalalab3.chatbotengine.model.inbound.update.{Message, Update}
 

@@ -4,6 +4,7 @@ import akka.actor.{Actor, ActorRef, Props}
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
+import scalalab3.chatbotengine.config.BotCredential
 import scalalab3.chatbotengine.telegram.{TelegramClient, TelegramClientBase}
 
 class LongPoolingEngineActor(client: BotCredential => TelegramClientBase) extends Actor {

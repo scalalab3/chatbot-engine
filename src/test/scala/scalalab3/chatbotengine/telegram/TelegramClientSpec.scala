@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 import scala.concurrent.Await
 import com.typesafe.config.ConfigFactory
 
-import scalalab3.chatbotengine.core.BotCredential
+import scalalab3.chatbotengine.config.BotCredential
 
 class TelegramClientSpec extends FunSpec with Matchers {
   describe("Telegram client") {
